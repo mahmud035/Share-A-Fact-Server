@@ -56,6 +56,16 @@ app.get('/categories', async (req, res) => {
 });
 
 //* -------------------------POST(CREATE)-------------------------
+// post fact data
+app.post('/facts', async (req, res) => {
+  try {
+    const task = req.body;
+    const result = await allFactCollection.insertOne(task);
+    res.send(result);
+  } catch (error) {
+    console.log(error.message.bold);
+  }
+});
 
 app.listen(port, () => {
   console.log('Server up and running'.cyan.bold);
