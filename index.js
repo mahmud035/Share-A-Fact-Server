@@ -19,7 +19,6 @@ app.get('/', (req, res) => {
 //* Mongodb Atlas
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.yeflywl.mongodb.net/?retryWrites=true&w=majority`;
-console.log(uri);
 
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
@@ -40,8 +39,21 @@ dbConnect();
 
 //* Collections
 const allFactCollection = client.db('factShareDBUser').collection('allFact');
+const categoriesCollection = client
+  .db('factShareDBUser')
+  .collection('categories');
 
 //* -------------------------GET(READ)-------------------------
+// get all categories
+app.get('/categories', async (req, res) => {
+  try {
+    const query = {};
+    const categories = await categoriesCollection.find(query).toArray();
+    res.send(categories);
+  } catch (error) {
+    console.log(error.message.bold);
+  }
+});
 
 //* -------------------------POST(CREATE)-------------------------
 
