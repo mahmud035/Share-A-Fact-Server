@@ -102,6 +102,29 @@ app.put('/facts/:id', async (req, res) => {
   }
 });
 
+// update mindBlowingCount
+app.put('/facts/mindBlowing/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const previousMindBlowingCount = req.body.mindBlowingCount;
+    const filter = { _id: ObjectId(id) };
+    const options = { upsert: true };
+    const updatedFactDoc = {
+      $set: {
+        mindBlowingCount: previousMindBlowingCount + 1,
+      },
+    };
+    const result = await allFactCollection.updateOne(
+      filter,
+      updatedFactDoc,
+      options
+    );
+    res.send(result);
+  } catch (error) {
+    console.log(error.message.bold);
+  }
+});
+
 app.listen(port, () => {
   console.log('Server up and running'.cyan.bold);
 });
