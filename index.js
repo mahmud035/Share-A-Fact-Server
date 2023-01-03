@@ -125,6 +125,29 @@ app.put('/facts/mindBlowing/:id', async (req, res) => {
   }
 });
 
+// update dislikeCount
+app.put('/facts/dislikeCount/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const previousDislikeCount = req.body.dislikeCount;
+    const filter = { _id: ObjectId(id) };
+    const options = { upsert: true };
+    const updatedFactDoc = {
+      $set: {
+        dislikeCount: previousDislikeCount - 1,
+      },
+    };
+    const result = await allFactCollection.updateOne(
+      filter,
+      updatedFactDoc,
+      options
+    );
+    res.send(result);
+  } catch (error) {
+    console.log(error.message.bold);
+  }
+});
+
 app.listen(port, () => {
   console.log('Server up and running'.cyan.bold);
 });
