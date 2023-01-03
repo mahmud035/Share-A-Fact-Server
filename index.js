@@ -66,6 +66,20 @@ app.get('/facts', async (req, res) => {
   }
 });
 
+// get specific category fact data
+app.get('/categories/:categoryName', async (req, res) => {
+  try {
+    const categoryName = req.params.categoryName;
+    console.log(categoryName);
+    const query = { category: categoryName };
+    const result = await allFactCollection.find(query).toArray();
+    console.log(result);
+    res.send(result);
+  } catch (error) {
+    console.log(error.message.bold);
+  }
+});
+
 //* -------------------------POST(CREATE)-------------------------
 // post fact data
 app.post('/facts', async (req, res) => {
