@@ -55,6 +55,17 @@ app.get('/categories', async (req, res) => {
   }
 });
 
+// get all fact
+app.get('/facts', async (req, res) => {
+  try {
+    const query = {};
+    const facts = await allFactCollection.find(query).toArray();
+    res.send(facts);
+  } catch (error) {
+    console.log(error.message.bold);
+  }
+});
+
 //* -------------------------POST(CREATE)-------------------------
 // post fact data
 app.post('/facts', async (req, res) => {
