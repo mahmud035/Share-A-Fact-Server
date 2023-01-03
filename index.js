@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('colors');
 require('dotenv').config();
 
@@ -72,6 +72,30 @@ app.post('/facts', async (req, res) => {
   try {
     const task = req.body;
     const result = await allFactCollection.insertOne(task);
+    res.send(result);
+  } catch (error) {
+    console.log(error.message.bold);
+  }
+});
+
+//* -------------------------PUT/PATCH(UPDATE)-------------------------
+// update likeCount
+app.put('/facts/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const previousLikeCount = req.body.likeCount;
+    const filter = { _id: ObjectId(id) };
+    const options = { upsert: true };
+    const updatedFactDoc = {
+      $set: {
+        likeCount: previousLikeCount + 1,
+      },
+    };
+    const result = await allFactCollection.updateOne(
+      filter,
+      updatedFactDoc,
+      options
+    );
     res.send(result);
   } catch (error) {
     console.log(error.message.bold);
