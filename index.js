@@ -59,7 +59,10 @@ app.get('/categories', async (req, res) => {
 app.get('/facts', async (req, res) => {
   try {
     const query = {};
-    const facts = await allFactCollection.find(query).toArray();
+    const facts = await allFactCollection
+      .find(query)
+      .sort({ _id: -1 })
+      .toArray();
     res.send(facts);
   } catch (error) {
     console.log(error.message.bold);
